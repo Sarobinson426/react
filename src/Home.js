@@ -1,15 +1,35 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Bloglist from './Bloglist';
 
 const Home = () => {
-    const [blogs, setBlogs] = useState([
-        {title: "Skittles: Green's Envy of Red", author: "Peach", id: 1, body: "ips Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ipsa adipisci quo culpa corrupti alias perspiciatis, sint voluptas repellendus laboriosam totam quod at expedita facere delectus, reprehenderit debitis accusamus commodi voluptates!"},
-        {title: "Mario: How to Control Road Rage", author: "Mario", id: 2, body: "ips Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ipsa adipisci quo culpa corrupti alias perspiciatis, sint voluptas repellendus laboriosam totam quod at expedita facere delectus, reprehenderit debitis accusamus commodi voluptates!"},
-        {title: "Baked Goods and Mushrooms WHO KNEW!?", author: "Peach", id: 3, body: "ips Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ipsa adipisci quo culpa corrupti alias perspiciatis, sint voluptas repellendus laboriosam totam quod at expedita facere delectus, reprehenderit debitis accusamus commodi voluptates!"}
-    ]);
+    const [blogs, setBlogs] = useState(null);
+    const [isPending, setIsPending] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect( () => {
+        fetch('http://localhost:8000/blogs')
+            .then( (response) => {
+                if(response.ok !== true) {
+                    throw Error('The resource could not be loaded');
+                }
+                return response.json();
+            })
+            .then( (data) => {
+                setIsPending(false);
+                setBlogs(data);
+            })
+            .catch( (err) => {
+                setError(err.message);
+                setIsPending(false);
+            });
+    }, []);
 
     return(
-        <Bloglist blogs={ blogs } title="All Blogs" />
+        <div>
+            { error && <div className="content">{ error }</div> }
+            { isPending && <div className="content">Loading...</div> }
+            { blogs && <Bloglist blogs={ blogs } title="All Blogs" /> }
+        </div>
     );
 }
 
