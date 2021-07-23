@@ -13,7 +13,6 @@ const Bloglist = (props) => {
                         <h2>{ blog.title }</h2>
                         <p>Authored By: { blog.author }</p>
                     </Link>
-                    <button>Delete</button>
                 </div>
             ))}
         </div>
