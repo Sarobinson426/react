@@ -4,7 +4,7 @@ import useFetch from './useFetch.js';
 const BlogDetails = () => {
     const { id } = useParams();
     const { data, isPending, error } = useFetch('http://localhost:8000/blogs/' + id);
-    const History = useHistory();
+    const history = useHistory();
 
     const handleDelete = () => {
 
@@ -12,7 +12,7 @@ const BlogDetails = () => {
             method: 'DELETE'
         }).then( () => {
             console.log('Deleted Blog');
-            History.push("/");
+            history.push("/");
         })
     }
 

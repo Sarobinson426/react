@@ -101,3 +101,8 @@
   border-radius: 8px;
   cursor: pointer;
 }
+
+/* 404 */
+._404-links a {
+  text-decoration: none !important;
+}
